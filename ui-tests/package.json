@@ -1,0 +1,12 @@
+{
+  "name": "civiclens-frontend-tests",
+  "private": true,
+  "description": "Optional UI smoke test. The frontend itself has no build step and no dependencies.",
+  "scripts": {
+    "test:ui": "node ui-smoke.js",
+    "test:ui:real": "node ui-real.js"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0"
+  }
+}

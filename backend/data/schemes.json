@@ -1,0 +1,1005 @@
+{
+  "meta": {
+    "data_notice": "REAL-DATA PREVIEW. Scheme details were read from official Government of India pages on 2026-10-30 through an automated fetch tool. Wording has NOT been compared word-for-word with the original documents, some documents were read only in part, and some sources are press releases rather than guidelines. Always confirm on the official source before applying.",
+    "data_notice_hi": "वास्तविक-डेटा पूर्वावलोकन। योजनाओं का विवरण 2026-10-30 को भारत सरकार के आधिकारिक पृष्ठों से स्वचालित फ़ेच टूल द्वारा पढ़ा गया। शब्दों का मूल दस्तावेज़ से शब्दशः मिलान नहीं किया गया है, कुछ दस्तावेज़ केवल आंशिक रूप से पढ़े गए, और कुछ स्रोत दिशानिर्देश नहीं बल्कि प्रेस विज्ञप्तियाँ हैं। आवेदन से पहले आधिकारिक स्रोत पर अवश्य पुष्टि करें।",
+    "coverage_note": "5 student-scholarship schemes. All are partially covered; none can show 'likely eligible'.",
+    "read_on": "2026-10-30",
+    "sources_read": [
+      "https://scholarships.gov.in/public/schemeGuidelines/CSSS_GUIDLINES_06022024.pdf",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2298357&reg=48&lang=1",
+      "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1960387&reg=3&lang=2",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1907241",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1779333",
+      "https://socialjustice.gov.in/public/ckeditor/upload/65661651839791.pdf"
+    ],
+    "sources_not_readable": [
+      "https://scholarships.gov.in/public/schemeGuidelines/CSSS_GUIDLINES_07022024_updated.pdf (robots_disallowed)",
+      "https://www.minorityaffairs.gov.in/WriteReadData/RTF1984/1672032313.pdf (robots_disallowed)",
+      "https://scholarships.gov.in/public/schemeGuidelines/AICTE/PM_USPY(SSSJKL)SchemeSpecifications.pdf (robots_disallowed)",
+      "https://scholarships.gov.in/public/schemeGuidelines/ApprovedmodifieddraftofTopClassCollege.pdf (robots_disallowed)",
+      "https://scholarships.gov.in/public/schemeGuidelines/AICTE/AICTE_2010_F.pdf (robots_disallowed)"
+    ],
+    "generated_by": "scripts/build_real_data.py"
+  },
+  "document_catalog": {
+    "income_certificate": {
+      "name": "Income certificate",
+      "name_hi": "आय प्रमाण पत्र"
+    },
+    "bank_account": {
+      "name": "Bank account in applicant's own name",
+      "name_hi": "आवेदक के नाम पर बैंक खाता"
+    },
+    "caste_certificate": {
+      "name": "Caste certificate",
+      "name_hi": "जाति प्रमाण पत्र"
+    },
+    "category_certificate": {
+      "name": "Category certificate (SC/ST/OBC)",
+      "name_hi": "श्रेणी प्रमाण पत्र (अ.जा./अ.ज.जा./अ.पि.व.)"
+    },
+    "marksheet": {
+      "name": "Marksheet of last qualifying examination",
+      "name_hi": "अंतिम उत्तीर्ण परीक्षा की अंकतालिका"
+    }
+  },
+  "schemes": [
+    {
+      "id": "CSSS-PMUSP",
+      "name": "Central Sector Scheme of Scholarship for College and University Students (PM-USP CSSS)",
+      "authority": "Ministry of Education, Government of India (Department of Higher Education)",
+      "category": "education",
+      "target_groups": [
+        "students"
+      ],
+      "scheme_type": "scholarship",
+      "states": [
+        "all"
+      ],
+      "geography": "All India",
+      "coverage": "partial",
+      "description": "Central scholarship for students admitted to regular degree courses after Class XII who scored above the 80th percentile in their stream and whose family income is within the limit. Applications are made on the National Scholarship Portal.",
+      "description_hi": "कक्षा 12 के बाद नियमित डिग्री पाठ्यक्रमों में प्रवेश लेने वाले, अपनी स्ट्रीम में 80वें पर्सेंटाइल से ऊपर अंक पाने वाले और सीमा के भीतर पारिवारिक आय वाले विद्यार्थियों के लिए केंद्रीय छात्रवृत्ति। आवेदन राष्ट्रीय छात्रवृत्ति पोर्टल पर होते हैं।",
+      "keywords": [
+        "scholarship",
+        "student",
+        "college",
+        "university",
+        "degree",
+        "undergraduate",
+        "postgraduate",
+        "central sector",
+        "merit",
+        "education",
+        "pm-usp",
+        "csss"
+      ],
+      "aliases": [
+        "PM-USP",
+        "PM-USP CSSS",
+        "CSSS",
+        "Central Sector Scholarship",
+        "Pradhan Mantri Uchchatar Shiksha Protsahan"
+      ],
+      "portal": {
+        "name": "National Scholarship Portal",
+        "url": "https://scholarships.gov.in/",
+        "verified": true,
+        "verified_via": "Named in the CSSS guidelines (section 4(ix), summary) and in the approved source list",
+        "note": "General official portal (National Scholarship Portal). It is listed in CivicLens's approved source list. This does not mean the scheme can be applied for there for every State; no scheme-specific application page has been verified.",
+        "note_hi": "सामान्य आधिकारिक पोर्टल (राष्ट्रीय छात्रवृत्ति पोर्टल), जो CivicLens की स्वीकृत स्रोत सूची में है। इसका अर्थ यह नहीं कि हर राज्य के लिए योजना यहीं से आवेदन होती है; योजना-विशेष आवेदन पृष्ठ सत्यापित नहीं किया गया है।"
+      },
+      "application": {
+        "summary": "Apply online on the National Scholarship Portal. The guidelines summary says applications sent directly to the Ministry are not accepted. Check the portal for the current window.",
+        "summary_hi": "राष्ट्रीय छात्रवृत्ति पोर्टल पर ऑनलाइन आवेदन करें। दिशानिर्देश-सारांश के अनुसार मंत्रालय को सीधे भेजे आवेदन स्वीकार नहीं होते। वर्तमान अवधि पोर्टल पर देखें।",
+        "doc_id": "d-csss-guidelines",
+        "passage_id": "p10"
+      },
+      "documents": [
+        {
+          "id": "d-csss-guidelines",
+          "title": "Central Sector Scheme of Scholarship for College and University Students (PM-USP CSSS)",
+          "authority": "Ministry of Education, Government of India",
+          "doc_type": "scheme guidelines",
+          "version": 1,
+          "publication_date": null,
+          "effective_date": null,
+          "status": "validity_not_established",
+          "last_checked": "2026-10-30",
+          "url": "https://scholarships.gov.in/public/schemeGuidelines/CSSS_GUIDLINES_06022024.pdf",
+          "demo": false,
+          "fetch_mode": "static",
+          "retrieval_status": "ok",
+          "manual_verification": true,
+          "reading_note": "Read on 2026-10-30 via a fetch tool. Only quoted fragments are stored as quotes; section 4(ii), 4(v) documents, section 8 and 4(ix) were only summarised by the tool and are marked 'not verbatim'. No issue date is stated in the text read. A second file named 'CSSS_GUIDLINES_07022024_updated.pdf' appears in search results on the same portal but its page refused automated access, so it was NOT read; which file is the current guideline is NOT established.",
+          "facts": {
+            "benefit": {
+              "value": "Rs.12,000/-per annum (graduation level, first three years; other levels differ)",
+              "passage_id": "p6",
+              "date": null
+            }
+          },
+          "passages": [
+            {
+              "id": "p1",
+              "section": "Cover page (title)",
+              "text": "Central Sector Scheme of Scholarship for College and University Students (PM-USP CSSS)",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p2",
+              "section": "Cover page (applicability)",
+              "text": "Applicable for academic year 2022-23 onwards.",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p3",
+              "section": "4(i) Eligibility: Class XII result",
+              "text": "above 80th percentile of successful candidates in the relevant stream",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p4",
+              "section": "4(iv) Eligibility: other scholarships",
+              "text": "Not availing benefit of any other scholarship schemes including State run scholarship schemes",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p5",
+              "section": "4(v) Eligibility: family income",
+              "text": "Students with gross parental/family income upto Rs. 4.5 lakh per annum",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p6",
+              "section": "7 Amount (graduation level, first three years)",
+              "text": "Rs.12,000/-per annum",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p7",
+              "section": "4(ii)-(iii) Courses (summary, not verbatim)",
+              "text": "Regular degree courses at institutions recognized by AICTE and relevant regulatory bodies. Correspondence, distance mode and diploma courses are not eligible.",
+              "verbatim": false,
+              "excerpt": true
+            },
+            {
+              "id": "p8",
+              "section": "4(v) Income certificate (summary, not verbatim)",
+              "text": "An income certificate is required only for fresh applicants.",
+              "verbatim": false,
+              "excerpt": true
+            },
+            {
+              "id": "p9",
+              "section": "8 Payment (summary, not verbatim)",
+              "text": "A bank account in the student's own name is required for DBT payment.",
+              "verbatim": false,
+              "excerpt": true
+            },
+            {
+              "id": "p10",
+              "section": "4(ix) How to apply (summary, not verbatim)",
+              "text": "Applications must be submitted online through the National Scholarships Portal (www.scholarships.gov.in). Applications sent directly to the Ministry are not accepted.",
+              "verbatim": false,
+              "excerpt": true
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "r-csss-income",
+          "doc_id": "d-csss-guidelines",
+          "passage_id": "p5",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lte",
+          "value": 450000,
+          "evidence": "gross parental/family income upto Rs. 4.5 lakh per annum",
+          "mandatory": true,
+          "exception": "The scheme counts family/parental income from the sources stated in the guidelines. Use the income on your income certificate.",
+          "exception_hi": "योजना दिशानिर्देशों में बताए स्रोतों की पारिवारिक/अभिभावक आय गिनती है। अपने आय प्रमाण पत्र की आय का उपयोग करें।",
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-csss-other",
+          "doc_id": "d-csss-guidelines",
+          "passage_id": "p4",
+          "criterion": "no_other_scholarship",
+          "label": "Not receiving another scholarship (central or state)",
+          "label_hi": "कोई अन्य छात्रवृत्ति (केंद्र या राज्य) नहीं ले रहे",
+          "attribute": "existing_benefits",
+          "op": "not_contains",
+          "value": "other_scholarship",
+          "evidence": "Not availing benefit of any other scholarship schemes",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-csss-pct",
+          "doc_id": "d-csss-guidelines",
+          "passage_id": "p3",
+          "criterion": "class12_percentile",
+          "label": "Class XII result above the 80th percentile (your stream)",
+          "label_hi": "कक्षा 12 में अपनी स्ट्रीम के 80वें पर्सेंटाइल से ऊपर",
+          "attribute": "class12_percentile",
+          "op": "eq",
+          "value": "Above the 80th percentile of successful candidates in the relevant stream",
+          "evidence": "above 80th percentile of successful candidates in the relevant stream",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": true
+        },
+        {
+          "id": "r-csss-course",
+          "doc_id": "d-csss-guidelines",
+          "passage_id": "p7",
+          "criterion": "course",
+          "label": "Enrolled in a regular degree course",
+          "label_hi": "नियमित डिग्री पाठ्यक्रम में नामांकित",
+          "attribute": "education_level",
+          "op": "in",
+          "value": [
+            "class_12",
+            "undergraduate",
+            "postgraduate"
+          ],
+          "evidence": "Regular degree courses at institutions recognized by AICTE",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        }
+      ],
+      "required_documents": [
+        {
+          "id": "q-csss-income",
+          "doc_id": "d-csss-guidelines",
+          "passage_id": "p8",
+          "key": "income_certificate",
+          "classification": "conditional",
+          "evidence": "An income certificate is required only for fresh applicants",
+          "condition": null,
+          "condition_note": "The summary says this applies to fresh applicants only.",
+          "condition_note_hi": "सारांश के अनुसार यह केवल नए आवेदकों पर लागू है।",
+          "how_to_obtain": null
+        },
+        {
+          "id": "q-csss-bank",
+          "doc_id": "d-csss-guidelines",
+          "passage_id": "p9",
+          "key": "bank_account",
+          "classification": "mandatory",
+          "evidence": "A bank account in the student's own name is required",
+          "condition": null,
+          "condition_note": null,
+          "condition_note_hi": null,
+          "how_to_obtain": null
+        }
+      ],
+      "validity": "unclear",
+      "validity_note": "No issue or effective date appears in the text read, and a second file with a newer-looking name exists on the same portal but could not be read.",
+      "unresolved": [
+        "Which guideline file is current: 'CSSS_GUIDLINES_06022024.pdf' (read) or 'CSSS_GUIDLINES_07022024_updated.pdf' (not readable).",
+        "The document list, the course rule and the application window were only summarised by the fetch tool, so they are not recorded as verified rules."
+      ]
+    },
+    {
+      "id": "PMS-SC",
+      "name": "Post-Matric Scholarship for Scheduled Caste students (PMS-SC)",
+      "authority": "Ministry of Social Justice & Empowerment, Government of India",
+      "category": "education",
+      "target_groups": [
+        "students"
+      ],
+      "scheme_type": "scholarship",
+      "states": [
+        "all"
+      ],
+      "geography": "All India (implemented through State governments)",
+      "coverage": "partial",
+      "description": "Centrally Sponsored post-matric scholarship for Scheduled Caste students studying in India, for students whose parent/guardian income is within the ceiling. Details come from two official press releases; the full scheme guidelines were not read.",
+      "description_hi": "भारत में पढ़ रहे अनुसूचित जाति के विद्यार्थियों के लिए केंद्र प्रायोजित दसवीं-पश्चात छात्रवृत्ति, जिनके अभिभावक की आय सीमा के भीतर है। विवरण दो आधिकारिक प्रेस विज्ञप्तियों से लिया गया है; पूर्ण दिशानिर्देश नहीं पढ़े गए।",
+      "keywords": [
+        "scholarship",
+        "post matric",
+        "scheduled caste",
+        "sc",
+        "student",
+        "social justice",
+        "college",
+        "higher education",
+        "pms-sc"
+      ],
+      "aliases": [
+        "PMS-SC",
+        "Post Matric Scholarship for SC",
+        "Post-Matric Scholarship Scheme for SC students"
+      ],
+      "portal": {
+        "name": "National Scholarship Portal",
+        "url": "https://scholarships.gov.in/",
+        "verified": true,
+        "verified_via": "Named in the PIB release as the portal used for this scheme and in the approved source list; how students apply varies by State",
+        "note": "General official portal (National Scholarship Portal). It is listed in CivicLens's approved source list. This does not mean the scheme can be applied for there for every State; no scheme-specific application page has been verified.",
+        "note_hi": "सामान्य आधिकारिक पोर्टल (राष्ट्रीय छात्रवृत्ति पोर्टल), जो CivicLens की स्वीकृत स्रोत सूची में है। इसका अर्थ यह नहीं कि हर राज्य के लिए योजना यहीं से आवेदन होती है; योजना-विशेष आवेदन पृष्ठ सत्यापित नहीं किया गया है।"
+      },
+      "application": null,
+      "documents": [
+        {
+          "id": "d-pmssc-pib-2026",
+          "title": "Central Government Strengthens Access to Higher Education for SC Students through POST-MATRIC SCHOLARSHIP SCHEME",
+          "authority": "Ministry of Social Justice & Empowerment (Press Information Bureau release)",
+          "doc_type": "press release",
+          "version": 1,
+          "publication_date": "2026-08-12",
+          "effective_date": null,
+          "status": "validity_not_established",
+          "last_checked": "2026-10-30",
+          "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2298357&reg=48&lang=1",
+          "demo": false,
+          "fetch_mode": "static",
+          "retrieval_status": "ok",
+          "manual_verification": true,
+          "reading_note": "Read on 2026-10-30 via a fetch tool. This is a PIB press release (a government statement about the scheme), not the scheme guidelines; it describes the scheme but does not list documents or application steps.",
+          "facts": {},
+          "passages": [
+            {
+              "id": "p1",
+              "section": "Press release: who is covered",
+              "text": "eligible SC students",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p2",
+              "section": "Press release: income ceiling",
+              "text": "annual income from all sources not exceeding ₹2.5 lakh",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p3",
+              "section": "Press release: nature of the scheme",
+              "text": "open-ended and demand-driven for eligible students studying in all recognized institutions across the country.",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p4",
+              "section": "Press release: portal named",
+              "text": "National Scholarship Portal (NSP)",
+              "verbatim": true,
+              "excerpt": true
+            }
+          ]
+        },
+        {
+          "id": "d-pmssc-pib-2023",
+          "title": "Pre-Matric Scholarships Scheme for SCs & Others and Post-Matric Scholarships Scheme for SC students (PMS-SC)",
+          "authority": "Ministry of Social Justice & Empowerment (Press Information Bureau release)",
+          "doc_type": "press release",
+          "version": 1,
+          "publication_date": "2023-09-25",
+          "effective_date": null,
+          "status": "validity_not_established",
+          "last_checked": "2026-10-30",
+          "url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1960387&reg=3&lang=2",
+          "demo": false,
+          "fetch_mode": "static",
+          "retrieval_status": "ok",
+          "manual_verification": true,
+          "reading_note": "Read on 2026-10-30 via a fetch tool. PIB press release (2023). It does not list required documents or application steps.",
+          "facts": {},
+          "passages": [
+            {
+              "id": "p1",
+              "section": "Press release: nature and coverage",
+              "text": "is a Centrally Sponsored Scheme for the SC students for studies in India only",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p2",
+              "section": "Press release: income ceiling",
+              "text": "whose Parent/Guardian's income should not exceed Rs. 2.5 lakh per annum.",
+              "verbatim": true,
+              "excerpt": true
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "r-pmssc-income-26",
+          "doc_id": "d-pmssc-pib-2026",
+          "passage_id": "p2",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lte",
+          "value": 250000,
+          "evidence": "annual income from all sources not exceeding ₹2.5 lakh",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pmssc-income-23",
+          "doc_id": "d-pmssc-pib-2023",
+          "passage_id": "p2",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lte",
+          "value": 250000,
+          "evidence": "income should not exceed Rs. 2.5 lakh per annum",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pmssc-cat-26",
+          "doc_id": "d-pmssc-pib-2026",
+          "passage_id": "p1",
+          "criterion": "category",
+          "label": "Belongs to a Scheduled Caste",
+          "label_hi": "अनुसूचित जाति से संबंधित",
+          "attribute": "category",
+          "op": "eq",
+          "value": "sc",
+          "evidence": "eligible SC students",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pmssc-cat-23",
+          "doc_id": "d-pmssc-pib-2023",
+          "passage_id": "p1",
+          "criterion": "category",
+          "label": "Belongs to a Scheduled Caste",
+          "label_hi": "अनुसूचित जाति से संबंधित",
+          "attribute": "category",
+          "op": "eq",
+          "value": "sc",
+          "evidence": "for the SC students",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pmssc-india",
+          "doc_id": "d-pmssc-pib-2023",
+          "passage_id": "p1",
+          "criterion": "study_in_india",
+          "label": "Studying in India",
+          "label_hi": "भारत में अध्ययनरत",
+          "attribute": "study_location",
+          "op": "eq",
+          "value": "Studying in India",
+          "evidence": "for studies in India only",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": true
+        }
+      ],
+      "required_documents": [],
+      "validity": "unknown",
+      "validity_note": "Two press releases (2023, 2026) state the same income ceiling, but the scheme guidelines were not read, so their current effective terms are not established.",
+      "unresolved": [
+        "Full scheme guidelines were not read: required documents, application steps and deadlines are unknown.",
+        "The scheme is implemented through State governments, so the application route may differ by State."
+      ]
+    },
+    {
+      "id": "PMS-ST",
+      "name": "Post Matric Scholarship for Scheduled Tribe students (PMS-ST)",
+      "authority": "Ministry of Tribal Affairs, Government of India",
+      "category": "education",
+      "target_groups": [
+        "students"
+      ],
+      "scheme_type": "scholarship",
+      "states": [
+        "all"
+      ],
+      "geography": "All India (implemented through State governments)",
+      "coverage": "partial",
+      "description": "Post-matric scholarship for Scheduled Tribe students in Class XI and above whose parental income is within the limit. Details come from one official press release (2023); the full guidelines were not read.",
+      "description_hi": "कक्षा 11 और उससे ऊपर पढ़ रहे अनुसूचित जनजाति के विद्यार्थियों के लिए दसवीं-पश्चात छात्रवृत्ति, जिनकी पारिवारिक आय सीमा के भीतर है। विवरण एक आधिकारिक प्रेस विज्ञप्ति (2023) से लिया गया; पूर्ण दिशानिर्देश नहीं पढ़े गए।",
+      "keywords": [
+        "scholarship",
+        "post matric",
+        "scheduled tribe",
+        "st",
+        "tribal",
+        "student",
+        "class 11",
+        "tribal affairs",
+        "pms-st"
+      ],
+      "aliases": [
+        "PMS-ST",
+        "Post Matric Scholarship for ST",
+        "Post Matric Scholarship (PMS) for ST students"
+      ],
+      "portal": {
+        "name": "National Scholarship Portal",
+        "url": "https://scholarships.gov.in/",
+        "verified": true,
+        "verified_via": "General portal from the approved source list; the PIB text read did not mention a portal",
+        "note": "General official portal (National Scholarship Portal). It is listed in CivicLens's approved source list. This does not mean the scheme can be applied for there for every State; no scheme-specific application page has been verified.",
+        "note_hi": "सामान्य आधिकारिक पोर्टल (राष्ट्रीय छात्रवृत्ति पोर्टल), जो CivicLens की स्वीकृत स्रोत सूची में है। इसका अर्थ यह नहीं कि हर राज्य के लिए योजना यहीं से आवेदन होती है; योजना-विशेष आवेदन पृष्ठ सत्यापित नहीं किया गया है।"
+      },
+      "application": null,
+      "documents": [
+        {
+          "id": "d-pmsst-pib-2023",
+          "title": "Ministry of Tribal Affairs implements various Scholarship Schemes to promote and encourage basic and higher education amongst ST population",
+          "authority": "Ministry of Tribal Affairs (Press Information Bureau release)",
+          "doc_type": "press release",
+          "version": 1,
+          "publication_date": "2023-03-15",
+          "effective_date": null,
+          "status": "validity_not_established",
+          "last_checked": "2026-10-30",
+          "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1907241",
+          "demo": false,
+          "fetch_mode": "static",
+          "retrieval_status": "ok",
+          "manual_verification": true,
+          "reading_note": "Read on 2026-10-30 via a fetch tool. PIB reply (2023) about the Post Matric Scholarship for ST students. The phrase 'in in' is reproduced exactly as the tool returned it. No scholarship amount, documents or application steps were stated.",
+          "facts": {},
+          "passages": [
+            {
+              "id": "p1",
+              "section": "Press release: coverage",
+              "text": "ST students studying in in class XI and above",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p2",
+              "section": "Press release: income limit",
+              "text": "whose parental annual income is up to Rs. 2.50 lakhs.",
+              "verbatim": true,
+              "excerpt": true
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "r-pmsst-cat",
+          "doc_id": "d-pmsst-pib-2023",
+          "passage_id": "p1",
+          "criterion": "category",
+          "label": "Belongs to a Scheduled Tribe",
+          "label_hi": "अनुसूचित जनजाति से संबंधित",
+          "attribute": "category",
+          "op": "eq",
+          "value": "st",
+          "evidence": "ST students",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pmsst-income",
+          "doc_id": "d-pmsst-pib-2023",
+          "passage_id": "p2",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lte",
+          "value": 250000,
+          "evidence": "parental annual income is up to Rs. 2.50 lakhs",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pmsst-level",
+          "doc_id": "d-pmsst-pib-2023",
+          "passage_id": "p1",
+          "criterion": "class_level",
+          "label": "Studying in Class XI or above",
+          "label_hi": "कक्षा 11 या उससे ऊपर में अध्ययनरत",
+          "attribute": "education_level",
+          "op": "gte_level",
+          "value": "class_10",
+          "evidence": "studying in in class XI and above",
+          "mandatory": true,
+          "exception": "Ambiguous: the source says 'class XI and above', but your profile records your current or highest completed level, so a Class XI student may be recorded as Class 10. Check this yourself.",
+          "exception_hi": "अस्पष्ट: स्रोत 'कक्षा 11 और उससे ऊपर' कहता है, जबकि आपकी प्रोफ़ाइल वर्तमान या उच्चतम पूर्ण स्तर दर्ज करती है; कक्षा 11 का विद्यार्थी 'कक्षा 10' दर्ज हो सकता है। इसे स्वयं जाँचें।",
+          "ambiguous": true,
+          "manual_check": false
+        }
+      ],
+      "required_documents": [],
+      "validity": "unknown",
+      "validity_note": "Based on one 2023 press release; no effective date or guidelines were read.",
+      "unresolved": [
+        "Full guidelines were not read: required documents, amounts, application steps and deadlines are unknown.",
+        "'Class XI and above' cannot be matched reliably to the profile's education field."
+      ]
+    },
+    {
+      "id": "AICTE-PRAGATI",
+      "name": "AICTE Pragati Scholarship Scheme for girl students (technical education)",
+      "authority": "All India Council for Technical Education (AICTE), Ministry of Education",
+      "category": "education",
+      "target_groups": [
+        "students",
+        "women"
+      ],
+      "scheme_type": "scholarship",
+      "states": [
+        "all"
+      ],
+      "geography": "All India",
+      "coverage": "partial",
+      "description": "Scholarship for girl students admitted to the first year (or second year by lateral entry) of AICTE-approved degree/diploma courses, with a family income limit and at most two girls per family. Based on a 2021 press release; confirm current terms with AICTE.",
+      "description_hi": "AICTE-अनुमोदित डिग्री/डिप्लोमा पाठ्यक्रमों के प्रथम वर्ष (या लेटरल एंट्री से द्वितीय वर्ष) में प्रवेश लेने वाली छात्राओं के लिए छात्रवृत्ति; पारिवारिक आय सीमा और प्रति परिवार अधिकतम दो बालिकाएँ। 2021 की प्रेस विज्ञप्ति पर आधारित; वर्तमान शर्तें AICTE से जाँचें।",
+      "keywords": [
+        "scholarship",
+        "girl",
+        "girls",
+        "women",
+        "female",
+        "technical",
+        "engineering",
+        "diploma",
+        "degree",
+        "aicte",
+        "pragati"
+      ],
+      "aliases": [
+        "Pragati",
+        "AICTE Pragati",
+        "Pragati Scholarship",
+        "AICTE Pragati Scholarship Scheme"
+      ],
+      "portal": {
+        "name": "National Scholarship Portal",
+        "url": "https://scholarships.gov.in/",
+        "verified": true,
+        "verified_via": "General portal from the approved source list; the PIB text read did not say where to apply",
+        "note": "General official portal (National Scholarship Portal). It is listed in CivicLens's approved source list. This does not mean the scheme can be applied for there for every State; no scheme-specific application page has been verified.",
+        "note_hi": "सामान्य आधिकारिक पोर्टल (राष्ट्रीय छात्रवृत्ति पोर्टल), जो CivicLens की स्वीकृत स्रोत सूची में है। इसका अर्थ यह नहीं कि हर राज्य के लिए योजना यहीं से आवेदन होती है; योजना-विशेष आवेदन पृष्ठ सत्यापित नहीं किया गया है।"
+      },
+      "application": null,
+      "documents": [
+        {
+          "id": "d-pragati-pib-2021",
+          "title": "Scholarship scheme under AICTE to encourage girls students to pursue Technical Education",
+          "authority": "Ministry of Education (Press Information Bureau release)",
+          "doc_type": "press release",
+          "version": 1,
+          "publication_date": "2021-12-08",
+          "effective_date": null,
+          "status": "validity_not_established",
+          "last_checked": "2026-10-30",
+          "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1779333",
+          "demo": false,
+          "fetch_mode": "static",
+          "retrieval_status": "ok",
+          "manual_verification": true,
+          "reading_note": "Read on 2026-10-30 via a fetch tool. This is a December 2021 Rajya Sabha reply published by PIB, almost five years old; income limit and benefit may have changed. AICTE's own scheme page/FAQ was not readable (its page refused automated access).",
+          "facts": {
+            "benefit": {
+              "value": "Rs. 50,000/- per annum",
+              "passage_id": "p5",
+              "date": null
+            }
+          },
+          "passages": [
+            {
+              "id": "p1",
+              "section": "Press release: admission year (degree/diploma)",
+              "text": "Students admitted in AICTE approved institutions in 1st year of Degree/ Diploma level course",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p2",
+              "section": "Press release: lateral entry",
+              "text": "2nd year of Degree/ Diploma level course through lateral entry.",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p3",
+              "section": "Press release: girls per family",
+              "text": "Maximum two girls per family.",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p4",
+              "section": "Press release: family income",
+              "text": "Total income of the family less than Rs. 8 lakh per annum.",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p5",
+              "section": "Press release: benefit",
+              "text": "a sum of Rs. 50,000/- per annum is disbursed to selected girl students",
+              "verbatim": true,
+              "excerpt": true
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "r-pragati-gender",
+          "doc_id": "d-pragati-pib-2021",
+          "passage_id": "p5",
+          "criterion": "gender",
+          "label": "Girl student",
+          "label_hi": "छात्रा",
+          "attribute": "gender",
+          "op": "eq",
+          "value": "female",
+          "evidence": "selected girl students",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pragati-income",
+          "doc_id": "d-pragati-pib-2021",
+          "passage_id": "p4",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lt",
+          "value": 800000,
+          "evidence": "Total income of the family less than Rs. 8 lakh per annum",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-pragati-siblings",
+          "doc_id": "d-pragati-pib-2021",
+          "passage_id": "p3",
+          "criterion": "girls_per_family",
+          "label": "At most two girls in the family from whom the scholarship is claimed",
+          "label_hi": "परिवार में अधिकतम दो बालिकाएँ",
+          "attribute": "girls_in_family",
+          "op": "eq",
+          "value": "At most two girls per family",
+          "evidence": "Maximum two girls per family",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": true
+        },
+        {
+          "id": "r-pragati-admission",
+          "doc_id": "d-pragati-pib-2021",
+          "passage_id": "p1",
+          "criterion": "admission_year",
+          "label": "Admitted to year 1 of an AICTE-approved degree/diploma course (or year 2 by lateral entry)",
+          "label_hi": "AICTE-अनुमोदित डिग्री/डिप्लोमा के प्रथम वर्ष (या लेटरल एंट्री से द्वितीय वर्ष) में प्रवेश",
+          "attribute": "admission_year",
+          "op": "eq",
+          "value": "1st year of Degree/Diploma, or 2nd year through lateral entry",
+          "evidence": "1st year of Degree/ Diploma level course",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": true
+        }
+      ],
+      "required_documents": [],
+      "validity": "unknown",
+      "validity_note": "Based on a December 2021 press release (almost five years old); AICTE's own scheme page could not be read.",
+      "unresolved": [
+        "The income limit, benefit and quotas in 2021 may have changed; the current AICTE terms are not established.",
+        "Required documents and the application route are unknown."
+      ]
+    },
+    {
+      "id": "PM-YASASVI-PMS",
+      "name": "PM YASASVI: Post-Matric Scholarship for OBC, EBC and DNT students",
+      "authority": "Ministry of Social Justice & Empowerment, Government of India",
+      "category": "education",
+      "target_groups": [
+        "students"
+      ],
+      "scheme_type": "scholarship",
+      "states": [
+        "all"
+      ],
+      "geography": "All India (implemented through State governments)",
+      "coverage": "partial",
+      "description": "Post-matric scholarship for Indian students belonging to OBC, EBC or DNT categories whose family income is within the limit. Based on the PM YASASVI guidelines (post-matric part); the guidelines state a scheme period that has ended, so check whether it continues.",
+      "description_hi": "OBC, EBC या DNT श्रेणी के भारतीय विद्यार्थियों के लिए दसवीं-पश्चात छात्रवृत्ति, जिनकी पारिवारिक आय सीमा के भीतर है। PM YASASVI दिशानिर्देशों (दसवीं-पश्चात भाग) पर आधारित; दिशानिर्देशों में बताई योजना-अवधि समाप्त हो चुकी है, इसलिए जाँचें कि योजना जारी है या नहीं।",
+      "keywords": [
+        "scholarship",
+        "post matric",
+        "obc",
+        "ebc",
+        "dnt",
+        "other backward classes",
+        "student",
+        "yasasvi",
+        "social justice"
+      ],
+      "aliases": [
+        "PM YASASVI",
+        "PM-YASASVI",
+        "YASASVI",
+        "PM YASASVI Post Matric Scholarship"
+      ],
+      "portal": {
+        "name": "National Scholarship Portal",
+        "url": "https://scholarships.gov.in/",
+        "verified": true,
+        "verified_via": "General portal from the approved source list; the Part B passages read did not name an application URL",
+        "note": "General official portal (National Scholarship Portal). It is listed in CivicLens's approved source list. This does not mean the scheme can be applied for there for every State; no scheme-specific application page has been verified.",
+        "note_hi": "सामान्य आधिकारिक पोर्टल (राष्ट्रीय छात्रवृत्ति पोर्टल), जो CivicLens की स्वीकृत स्रोत सूची में है। इसका अर्थ यह नहीं कि हर राज्य के लिए योजना यहीं से आवेदन होती है; योजना-विशेष आवेदन पृष्ठ सत्यापित नहीं किया गया है।"
+      },
+      "application": null,
+      "documents": [
+        {
+          "id": "d-yasasvi-guidelines",
+          "title": "PM YOUNG ACHIEVERS SCHOLARSHIP AWARD SCHEME FOR VIBRANT INDIA FOR OBCs AND OTHERS (PM –YASASVI)",
+          "authority": "Ministry of Social Justice & Empowerment, Department of Social Justice & Empowerment, Government of India",
+          "doc_type": "scheme guidelines",
+          "version": 1,
+          "publication_date": null,
+          "effective_date": null,
+          "status": "unclear",
+          "last_checked": "2026-10-30",
+          "url": "https://socialjustice.gov.in/public/ckeditor/upload/65661651839791.pdf",
+          "demo": false,
+          "fetch_mode": "static",
+          "retrieval_status": "ok",
+          "manual_verification": true,
+          "reading_note": "Read on 2026-10-30 via a fetch tool; roughly the first 100,000 of 119,414 characters were read, and the tool itself truncated each quotation. The tool reported that the document covers 2021-22 to 2025-26 (summary, not verbatim); that period has ended, and whether the scheme was extended or replaced was NOT established, so validity is marked unclear. Only the post-matric part (Part B) is represented. The list of documents after para 8.3 was cut off and is NOT recorded.",
+          "facts": {},
+          "passages": [
+            {
+              "id": "p1",
+              "section": "Part B (post-matric) 5(i): who may apply",
+              "text": "The scholarships will be open to Indian nationals belonging to OBCs, EBCs and DNTs",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p2",
+              "section": "Part B V(xiv): employed students",
+              "text": "Employed students whose income combined with the income of their parents/ guardians does not exceed Rs. 2.50 lakh per annum",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p3",
+              "section": "Part B V(xv): unemployed students",
+              "text": "Unemployed students whose parents/guardians income from all sources does not exceed Rs. 2.50 lakh per annum",
+              "verbatim": true,
+              "excerpt": true
+            },
+            {
+              "id": "p4",
+              "section": "Part B 8.3: documents (list not read)",
+              "text": "Until the above system is brought into effect, the documents may be scanned and uploaded which include:",
+              "verbatim": true,
+              "excerpt": true
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "r-yas-cat",
+          "doc_id": "d-yasasvi-guidelines",
+          "passage_id": "p1",
+          "criterion": "category",
+          "label": "OBC, EBC or DNT category",
+          "label_hi": "OBC, EBC या DNT श्रेणी",
+          "attribute": "category",
+          "op": "in",
+          "value": [
+            "obc",
+            "ebc_dnt"
+          ],
+          "evidence": "OBCs, EBCs and DNTs",
+          "mandatory": true,
+          "exception": "The scheme says 'as notified' by the Central/State Government; your category certificate must match the notified list.",
+          "exception_hi": "योजना के अनुसार 'अधिसूचित' श्रेणी लागू है; आपका श्रेणी प्रमाण पत्र अधिसूचित सूची से मेल खाना चाहिए।",
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-yas-income-unemp",
+          "doc_id": "d-yasasvi-guidelines",
+          "passage_id": "p3",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lte",
+          "value": 250000,
+          "evidence": "does not exceed Rs. 2.50 lakh per annum",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        },
+        {
+          "id": "r-yas-income-emp",
+          "doc_id": "d-yasasvi-guidelines",
+          "passage_id": "p2",
+          "criterion": "income",
+          "label": "Annual family income within limit",
+          "label_hi": "वार्षिक पारिवारिक आय सीमा के भीतर",
+          "attribute": "annual_income",
+          "op": "lte",
+          "value": 250000,
+          "evidence": "does not exceed Rs. 2.50 lakh per annum",
+          "mandatory": true,
+          "exception": null,
+          "exception_hi": null,
+          "ambiguous": false,
+          "manual_check": false
+        }
+      ],
+      "required_documents": [],
+      "validity": "unclear",
+      "validity_note": "The document reports a scheme period of 2021-22 to 2025-26 (summary, not verbatim); that period has ended and any extension is unknown.",
+      "unresolved": [
+        "Whether the scheme continues after 2025-26.",
+        "The list of documents after para 8.3 was cut off and is not recorded.",
+        "A State domicile requirement was mentioned in the fetch tool's summary but is not recorded as a verified rule."
+      ]
+    }
+  ]
+}
