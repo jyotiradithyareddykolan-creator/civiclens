@@ -1,0 +1,7 @@
+ui-tests
+scripts
+node_modules
+.venv
+.github
+backend/tests
+DATA_VERIFICATION_REPORT.md
