@@ -35,6 +35,35 @@ def is_configured() -> bool:
     return _backend is not None or bool(get_settings().llm_api_key)
 
 
+def _call_anthropic(s, system: str, user: str) -> str:
+    r = httpx.post(
+        "https://api.anthropic.com/v1/messages",
+        headers={"x-api-key": s.llm_api_key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
+        json={"model": s.llm_model, "max_tokens": 700, "system": system,
+              "messages": [{"role": "user", "content": user}]},
+        timeout=30.0,
+    )
+    r.raise_for_status()
+    return "".join(b.get("text", "") for b in r.json().get("content", []) if b.get("type") == "text")
+
+
+def _call_gemini(s, system: str, user: str) -> str:
+    # The key goes in a header, never in the URL, so it cannot end up in request logs.
+    r = httpx.post(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{s.llm_model}:generateContent",
+        headers={"x-goog-api-key": s.llm_api_key, "content-type": "application/json"},
+        json={"systemInstruction": {"parts": [{"text": system}]},
+              "contents": [{"role": "user", "parts": [{"text": user}]}],
+              # Room for models that "think" before answering; the schema check below still applies.
+              "generationConfig": {"maxOutputTokens": 2048, "responseMimeType": "application/json"}},
+        timeout=30.0,
+    )
+    r.raise_for_status()
+    cands = r.json().get("candidates") or []
+    parts = ((cands[0].get("content") or {}).get("parts") or []) if cands else []
+    return "".join(p.get("text", "") for p in parts if isinstance(p, dict) and not p.get("thought"))
+
+
 def _call(system: str, user: str) -> str:
     if _backend is not None:
         return _backend(system, user)
@@ -42,16 +71,8 @@ def _call(system: str, user: str) -> str:
     if not s.llm_api_key:
         raise LLMUnavailable("not configured")
     try:
-        r = httpx.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={"x-api-key": s.llm_api_key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
-            json={"model": s.llm_model, "max_tokens": 700, "system": system,
-                  "messages": [{"role": "user", "content": user}]},
-            timeout=30.0,
-        )
-        r.raise_for_status()
-        return "".join(b.get("text", "") for b in r.json().get("content", []) if b.get("type") == "text")
-    except (httpx.HTTPError, ValueError) as e:
+        return (_call_gemini if s.llm_provider == "gemini" else _call_anthropic)(s, system, user)
+    except (httpx.HTTPError, ValueError, KeyError, IndexError, AttributeError, TypeError) as e:
         # Never include request details (they contain the key) in the error.
         raise LLMUnavailable(type(e).__name__) from None
 

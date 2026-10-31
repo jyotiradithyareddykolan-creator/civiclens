@@ -46,6 +46,7 @@ Copy `.env.example` to `.env` (or export the variables). **Names only; never com
 | Variable | Default | Purpose |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | empty | Optional. Enables AI-written answers in *Ask a question* and a plain-language explanation tool. **Without it the app runs fully in extractive/demo mode.** Server-side only; never sent to the browser. |
+| `GEMINI_API_KEY` | empty | Optional alternative to `ANTHROPIC_API_KEY` (Google Gemini). Same rules: server-side only, output is strictly validated. Provider is chosen by whichever key is set (Anthropic first if both), or force it with `CIVICLENS_LLM_PROVIDER=gemini` or `anthropic`. `CIVICLENS_LLM_MODEL` overrides the default model name (default for Gemini: `gemini-2.5-flash`; check Google's current model list). Not tested against the real Gemini service, only with mocked responses. |
 | `CIVICLENS_LLM_MODEL` | `claude-sonnet-5-5` | Model used when a key is set. |
 | `CIVICLENS_DATA_PATH` | `backend/data/schemes.json` | Scheme dataset. |
 | `CIVICLENS_LIVE_FETCH` | `0` | `1` lets "Check source now" fetch **https `*.gov.in` / `*.nic.in`** URLs only (timeout 10 s, 3 bounded retries). |
@@ -243,3 +244,20 @@ civiclens/
 5. (1:45) **Evidence** tab: exact quoted passage, PIB link, "How this source was read".
 6. (2:10) **CSSS → Eligibility**: percentile cannot be checked here; the course rule is unverified. **Checklist** shows "not verified" items; **Policy changes** says nothing to compare.
 7. (2:40) Switch to हिन्दी. Close: preliminary assessment only; every figure needs checking at the official source.
+
+## 13. GitHub and deployment
+
+**GitHub (from the project folder, Windows PowerShell):**
+```powershell
+git init
+git add .
+git commit -m "CivicLens"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/civiclens.git
+git push -u origin main
+```
+Create the empty repository first on github.com (no README, no .gitignore). `.env` and `.venv` are already in `.gitignore`. The `tests` workflow in `.github/workflows/` runs the test suite on every push.
+
+**Deploy on Render (free):** Render dashboard → New → Blueprint → choose the repo → Apply. `render.yaml` and the `Dockerfile` do the rest; the app is served at the `onrender.com` URL (first load after idle can take about a minute). Optional: add `ANTHROPIC_API_KEY` under Environment in the dashboard (never in a file).
+
+The Dockerfile has not been built in the environment where this project was written (no Docker daemon there); the start command itself was tested.

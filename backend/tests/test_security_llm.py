@@ -6,6 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import agent, ingest, llm, security
+from app.config import get_settings
 from app.main import create_app
 
 from .conftest import STUDENT
@@ -238,3 +239,56 @@ def test_draft_is_untrusted_until_curated():
     d = ingest.build_draft("text", b"1. Age\nMust be 18.", "T", "A", "https://x.gov.in/a", None)
     assert d["status"] == "validity_not_established" and d["effective_date"] is None and d["url_on_approved_domain"] and "curator_todo" in d
     assert ingest.build_draft("text", b"x", "T", "A", "https://evil.com/", None)["url_on_approved_domain"] is False
+
+
+# ---------------------------------------------------------------- Gemini provider (mocked; no real network)
+class _FakeResp:
+    def __init__(self, payload):
+        self._p = payload
+
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return self._p
+
+
+def test_gemini_provider_selected_and_request_shape(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "g-test-SECRETKEY-999")
+    s = get_settings()
+    assert s.llm_provider == "gemini" and s.llm_api_key and s.llm_model.startswith("gemini")
+    seen = {}
+
+    def fake_post(url, headers=None, json=None, timeout=None):
+        seen.update(url=url, headers=headers, json=json)
+        return _FakeResp({"candidates": [{"content": {"parts": [
+            {"text": "hidden thoughts", "thought": True}, {"text": '{"explanation": "Preliminary result."}'}]}}]})
+    monkeypatch.setattr(httpx, "post", fake_post)
+    out = llm.explain_result({"status": "undetermined"}, "en")
+    assert out == {"explanation": "Preliminary result."}
+    assert "generativelanguage.googleapis.com" in seen["url"] and "SECRETKEY" not in seen["url"]
+    assert seen["headers"]["x-goog-api-key"] == "g-test-SECRETKEY-999"
+    assert seen["json"]["systemInstruction"]["parts"][0]["text"] and seen["json"]["contents"][0]["role"] == "user"
+
+
+def test_gemini_bad_responses_become_unavailable_or_rejected(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "g-test-SECRETKEY-999")
+    monkeypatch.setattr(httpx, "post", lambda *a, **k: _FakeResp({"candidates": []}))
+    # empty output is not valid JSON, so the strict validator rejects it (the app then uses its template fallback)
+    with pytest.raises(llm.ValidationFailed):
+        llm.explain_result({"status": "undetermined"}, "en")
+    monkeypatch.setattr(httpx, "post", lambda *a, **k: _FakeResp(["not", "a", "dict"]))
+    with pytest.raises(llm.LLMUnavailable) as e:
+        llm.explain_result({"status": "undetermined"}, "en")
+    assert "SECRETKEY" not in str(e.value)
+
+
+def test_provider_choice_rules(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "g")
+    assert get_settings().llm_provider == "gemini"
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "a")
+    assert get_settings().llm_provider == "anthropic"          # Anthropic wins when both exist and nothing is forced
+    monkeypatch.setenv("CIVICLENS_LLM_PROVIDER", "gemini")
+    assert get_settings().llm_provider == "gemini" and get_settings().llm_api_key == "g"
+    monkeypatch.setenv("CIVICLENS_LLM_PROVIDER", "nonsense")
+    assert get_settings().llm_provider == "anthropic"

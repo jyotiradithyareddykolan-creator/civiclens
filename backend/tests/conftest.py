@@ -17,6 +17,8 @@ os.environ["CIVICLENS_TODAY"] = "2026-10-30"
 os.environ["CIVICLENS_LIVE_FETCH"] = "0"
 os.environ["CIVICLENS_RATE_LIMIT_PER_MINUTE"] = "100000"
 os.environ.pop("ANTHROPIC_API_KEY", None)
+os.environ.pop("GEMINI_API_KEY", None)
+os.environ.pop("CIVICLENS_LLM_PROVIDER", None)
 
 from fastapi.testclient import TestClient  # noqa: E402
 
