@@ -34,6 +34,16 @@ const check = (name, cond, extra) => { console.log((cond ? 'PASS ' : 'FAIL ') + 
   await go('#/scheme/CSSS-PMUSP/checklist', () => text().includes('not verified'), 'CSSS checklist marks summary-only items unverified');
   await go('#/scheme/CSSS-PMUSP/changes', () => text().includes('nothing to compare') || text().includes('Only one version'), 'no comparison without two versions');
   await go('#/scheme/PM-YASASVI-PMS/eligibility', () => text().includes('unclear'), 'YASASVI validity flagged unclear');
+  // Ask tab: output must never contain stray "null" or "[object ...]" text, with an answer, citations, or neither.
+  await go('#/scheme/CSSS-PMUSP/ask', () => d.querySelector('section form.searchbox input'), 'ask tab renders');
+  for (const q of ['What is the income limit and what all documents are needed?', 'qqqq zzzz unrelated words']) {
+    const inp = d.querySelector('section form.searchbox input'); inp.value = q;
+    inp.form.dispatchEvent(new w.Event('submit', { cancelable: true, bubbles: true }));
+    await wf(() => d.querySelector('[aria-live="polite"]') && d.querySelector('[aria-live="polite"]').children.length > 1, 5000);
+    const outEl = d.querySelector('[aria-live="polite"]');
+    const stray = [...outEl.childNodes].filter((n) => n.nodeType !== 1);   // bare text nodes = "null" / "[object ...]" leaks
+    check('ask output has no stray text nodes (null/[object]): ' + q.slice(0, 18), outEl.textContent.length > 0 && stray.length === 0, stray.map((n) => n.textContent).join('|'));
+  }
   const sel = d.getElementById('lang-select'); sel.value = 'hi'; sel.dispatchEvent(new w.Event('change'));
   await go('#/scheme/CSSS-PMUSP/eligibility', () => text().includes('4,50,000') && text().includes('फ़ेच'), 'Hindi keeps numbers and shows verification warning');
   check('no uncaught JS errors', w.__errs.length === 0, w.__errs.join('; '));

@@ -558,10 +558,11 @@ function tabAsk(a, d, id) {
     e.preventDefault(); out.replaceChildren(loading());
     try {
       const r = await api('/ask', { method: 'POST', body: { question: input.value, scheme_id: id, language: state.lang } });
-      out.replaceChildren(
+      // replaceChildren() turns null and arrays into text ("null", "[object ...]"), so flatten and drop empties first.
+      out.replaceChildren(...[
         notice(r.message, r.abstained ? 'info' : 'ok'),
         r.answer ? h('div', { class: 'card' }, h('h3', {}, tr('answerTitle')), h('p', {}, r.answer), h('p', { class: 'small muted' }, tr('fromAI'))) : null,
-        r.citations.map((c) => citeCard(c, false)), h('p', { class: 'small muted' }, r.disclaimer));
+        r.citations.map((c) => citeCard(c, false)), h('p', { class: 'small muted' }, r.disclaimer)].flat(Infinity).filter(Boolean));
     } catch (err) { out.replaceChildren(errorBox(err)); }
   } }, input, h('button', { class: 'btn', type: 'submit' }, tr('askBtn')));
   return h('section', {}, h('h2', {}, tr('askTitle')), form, out);
