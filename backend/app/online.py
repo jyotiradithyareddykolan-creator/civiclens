@@ -267,8 +267,8 @@ def _json_source_text(value) -> str:
 def _myscheme_detail_text(url: str, data: bytes) -> tuple[bytes, str, str] | None:
     """Use myScheme's public detail API when its rendered page is only an error shell.
 
-    The key is a public client key exposed by myScheme's own frontend and is opt-in
-    through CIVICLENS_MYSCHEME_API_KEY; it is never returned to the browser.
+    The credential is supplied by the operator through
+    CIVICLENS_MYSCHEME_API_KEY; it is never returned to the browser.
     """
     parsed = urlparse(url)
     if parsed.hostname != "www.myscheme.gov.in" or "/schemes/" not in parsed.path:
