@@ -274,6 +274,7 @@ function viewHome() {
   const input = h('input', { type: 'search', id: 'q', name: 'q', value: state.query, placeholder: tr('searchPlaceholder'), maxlength: 500, autocomplete: 'off', 'aria-label': tr('searchLabel') });
   const submit = (e) => { if (e) e.preventDefault(); state.query = input.value.trim(); runSearch(); };
   const useBox = h('input', { type: 'checkbox', id: 'use-profile', checked: state.useProfile, onchange: (e) => { state.useProfile = e.target.checked; } });
+  const onlineBox = h('input', { type: 'checkbox', id: 'use-online', checked: true });
   mount(
     h('section', { class: 'hero' }, h('h1', {}, 'CivicLens'), h('p', { class: 'lead' }, tr('tagline')),
       h('form', { class: 'searchbox', onsubmit: submit, role: 'search' }, input, h('button', { class: 'btn', type: 'submit' }, tr('searchBtn'))),
@@ -287,19 +288,37 @@ function viewHome() {
     h('div', { class: 'card' }, hasProfile()
       ? h('label', { class: 'check' }, useBox, tr('useDetails'))
       : h('p', { class: 'small' }, tr('noDetailsYet') + ' ', h('a', { href: '#/profile' }, tr('addDetails')))),
+    h('div', { class: 'card' }, h('label', { class: 'check' }, onlineBox, ' Search official government sources online (recommended)'),
+      h('p', { class: 'small muted' }, 'Find schemes directly from approved official government portals. Profile details are used only after a scheme is selected and official content is retrieved.')),
     h('p', { class: 'small muted' }, state.meta.coverage_note ? tr('coverage') + ': ' + state.meta.coverage_note : ''));
   input.focus();
 }
 
 async function runSearch() {
-  const req = { query: state.query, filters: Object.fromEntries(Object.entries(state.filters).filter(([, v]) => v)), language: state.lang, max_schemes: 5 };
+  const req = { query: state.query, filters: Object.fromEntries(Object.entries(state.filters).filter(([, v]) => v)), language: state.lang, max_schemes: 5,
+    online: !!document.getElementById('use-online')?.checked };
   if (state.useProfile && hasProfile()) req.profile = cleanProfile();
   state.lastRequest = req;
   mount(loading(tr('searching')));
   try {
-    state.results = await api('/agent/run', { method: 'POST', body: req });
+    // Render the reviewed catalogue immediately. Online discovery is a separate
+    // request so a slow or unavailable official portal cannot hide local results.
+    const localReq = { ...req, online: false };
+    state.results = await api('/agent/run', { method: 'POST', body: localReq });
+    if (req.online) state.results.online_discovery = { results: [], online: true, state: 'searching', notice: 'Searching approved official government sources…' };
     location.hash = '#/results';
     if (currentRoute().name === 'results') render();
+    if (req.online) {
+      try {
+        const online = await api('/discover', { method: 'POST', body: { query: state.query, limit: req.max_schemes } });
+        if (state.results && state.query === req.query) { state.results.online_discovery = online; render(); }
+      } catch (err) {
+        if (state.results && state.query === req.query) {
+          state.results.online_discovery = { results: [], online: true, state: 'source_failure', notice: 'Official-source search failed; no online result is being treated as evidence.' };
+          render();
+        }
+      }
+    }
   } catch (err) { mount(h('h2', {}, tr('resultsFor')), errorBox(err, runSearch), h('a', { class: 'btn secondary small', href: '#/' }, tr('backHome'))); }
 }
 
@@ -342,6 +361,35 @@ function schemeCard(r) {
       card.portal ? ext(card.portal.url, tr('officialPortal') + ': ' + card.portal.name) : null));
 }
 
+function onlineLeadCard(lead) {
+  const out = h('div', { class: 'small' });
+  return h('article', { class: 'card' }, h('h3', {}, lead.name),
+    h('p', { class: 'small muted' }, lead.authority + ' · official discovery lead'),
+    h('p', {}, lead.description),
+    h('p', { class: 'small' }, 'State: Not retrieved. Search relevance is not eligibility evidence; the description above will not be used as eligibility evidence.'),
+    h('div', { class: 'btn-row' }, ext(lead.source_url, 'Open official source'),
+      h('button', { class: 'btn secondary small', type: 'button', onclick: async (e) => {
+        e.currentTarget.disabled = true; out.replaceChildren(loading('Retrieving official content…'));
+        try {
+          const r = await api('/discover/retrieve', { method: 'POST', body: lead });
+          const ev = await api('/drafts/' + encodeURIComponent(r.draft_id) + '/eligibility', { method: 'POST', body: { profile: cleanProfile(), language: state.lang } });
+          const doc = r.scheme && r.scheme.documents && r.scheme.documents[0];
+          const evidence = (doc?.passages || []).slice(0, 2).map((p) => p.text).join(' ');
+          out.replaceChildren(notice(r.message, 'info'),
+            h('p', { class: 'small' }, 'State: ' + (r.rules_extracted ? 'Retrieved with criteria' : 'Retrieved without extractable criteria')),
+            h('p', {}, 'Eligibility criteria extracted: ' + r.rules_extracted + ' · Coverage: ' + r.source_coverage),
+            h('p', {}, 'Preliminary assessment: ' + ev.status_label),
+            doc ? h('dl', { class: 'kv' },
+              h('dt', {}, 'Official source URL'), h('dd', {}, ext(doc.retrieval_source_url || doc.url, doc.retrieval_source_url || doc.url)),
+              h('dt', {}, 'Retrieved'), h('dd', {}, doc.last_checked || 'Not recorded')) : null,
+            evidence ? h('p', { class: 'small' }, h('strong', {}, 'Supporting evidence: '), evidence) :
+              h('p', { class: 'small muted' }, 'No supporting source passage was extracted; eligibility is undetermined.'),
+            h('p', { class: 'small muted' }, ev.disclaimer));
+        } catch (err) { out.replaceChildren(notice('State: Retrieval failed. Discovery text was not used as eligibility evidence.', 'error'), errorBox(err)); }
+        e.currentTarget.disabled = false;
+      } }, 'Retrieve and assess'), out));
+}
+
 function viewResults() {
   const data = state.results;
   if (!data) { location.hash = '#/'; return; }
@@ -352,6 +400,13 @@ function viewResults() {
     (data.notices || []).filter((n) => !(n.code === 'no_results' && !data.results.length)).map((n) => notice(n.message, '')),
     followupForm(questions, runSearch),
     data.results.length ? data.results.map(schemeCard) : h('div', { class: 'empty' }, h('p', {}, (data.notices[0] || {}).message || '')),
+    data.online_discovery ?
+      h('section', { class: 'online-results' },
+        h('h2', {}, 'Official online discovery'),
+        h('p', { class: 'small muted' }, data.online_discovery.notice),
+        data.online_discovery.state === 'source_failure' ? notice('Official-source retrieval failed. Try again later or broaden the search.', 'warning') : null,
+        data.online_discovery.state === 'no_official_results' ? h('div', { class: 'empty' }, h('p', {}, 'No official schemes matched this search. This does not mean no such scheme exists.')) : null,
+        data.online_discovery.results && data.online_discovery.results.length ? data.online_discovery.results.map(onlineLeadCard) : null) : null,
     h('p', { class: 'small muted' }, state.meta.disclaimer));
 }
 

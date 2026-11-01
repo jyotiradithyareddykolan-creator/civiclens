@@ -95,6 +95,13 @@ class SearchRequest(BaseModel):
     profile: Optional[Profile] = None
     language: Literal["en", "hi"] = "en"
     limit: int = Field(10, ge=1, le=20)
+    online: bool = False
+
+
+class OnlineDiscoveryRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    query: str = Field(..., min_length=2, max_length=500)
+    limit: int = Field(5, ge=1, le=10)
 
 
 class AssessRequest(BaseModel):
@@ -124,3 +131,4 @@ class AgentRunRequest(BaseModel):
     profile: Optional[Profile] = None
     language: Literal["en", "hi"] = "en"
     max_schemes: int = Field(3, ge=1, le=5)
+    online: bool = False

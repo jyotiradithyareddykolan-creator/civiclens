@@ -7,7 +7,7 @@ from typing import Callable, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from . import discovery, llm, security
+from . import discovery, llm, security, online
 from .changes import compare_versions
 from .checklist import build_checklist
 from .eligibility import evaluate, required_display
@@ -223,5 +223,11 @@ def run_agent(req: AgentRunRequest) -> dict:
         "validation": {"schema_valid": True, "statuses_computed_by_code": True,
                        "note": "Responses are validated against a schema; eligibility statuses come from deterministic code, not from an LLM."},
     }
+    if req.online:
+        try:
+            response["online_discovery"] = online.discover(req.query, req.max_schemes)
+        except Exception:
+            response["online_discovery"] = {"results": [], "online": True,
+                                             "notice": "Online discovery was unavailable; showing local reviewed results only."}
     AgentResponse.model_validate(response)  # raises if the structure is wrong
     return response

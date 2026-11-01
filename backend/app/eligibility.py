@@ -29,6 +29,8 @@ def eval_op(op: str, user, required) -> bool | None:
     try:
         if op == "lt":
             return user < required
+        if op == "gt":
+            return user > required
         if op == "lte":
             return user <= required
         if op == "gte":
@@ -53,9 +55,9 @@ def eval_op(op: str, user, required) -> bool | None:
 
 
 _REQ_TXT = {
-    "en": {"lt": "less than {v}", "lte": "at most {v}", "gte": "at least {v}", "eq": "{v}", "in": "one of: {v}", "between": "between {lo} and {hi}",
+    "en": {"lt": "less than {v}", "gt": "more than {v}", "lte": "at most {v}", "gte": "at least {v}", "eq": "{v}", "in": "one of: {v}", "between": "between {lo} and {hi}",
            "not_contains": "must not include: {v}", "gte_level": "at least {v}", "unreadable": "not readable in the source copy"},
-    "hi": {"lt": "{v} से कम", "lte": "अधिकतम {v}", "gte": "कम से कम {v}", "eq": "{v}", "in": "इनमें से एक: {v}", "between": "{lo} से {hi} के बीच",
+    "hi": {"lt": "{v} से कम", "gt": "{v} से अधिक", "lte": "अधिकतम {v}", "gte": "कम से कम {v}", "eq": "{v}", "in": "इनमें से एक: {v}", "between": "{lo} से {hi} के बीच",
            "not_contains": "इसमें शामिल नहीं होना चाहिए: {v}", "gte_level": "कम से कम {v}", "unreadable": "स्रोत प्रति में पढ़ने योग्य नहीं"},
 }
 
@@ -178,8 +180,8 @@ def _variants_verdict(group: list[dict], user) -> str:
     return "verdict_mixed"
 
 
-def evaluate(scheme: dict, profile: dict, lang: str = "en", doc_ids: list[str] | None = None) -> dict:
-    store = get_store()
+def evaluate(scheme: dict, profile: dict, lang: str = "en", doc_ids: list[str] | None = None, store=None) -> dict:
+    store = store or get_store()
     active, excluded = select_docs(scheme, doc_ids)
     usable = [d for d in active if d.get("retrieval_status", "ok") == "ok"]
     usable_ids = {d["id"] for d in usable}

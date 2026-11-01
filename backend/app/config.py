@@ -25,6 +25,7 @@ class Settings:
     rate_limit_per_minute: int
     max_upload_bytes: int
     llm_provider: str = "anthropic"
+    myscheme_api_key: str = ""
 
 
 def _llm_choice() -> tuple[str, str, str]:
@@ -51,6 +52,7 @@ def get_settings() -> Settings:
         stale_days=_int("CIVICLENS_STALE_DAYS", 90),
         rate_limit_per_minute=_int("CIVICLENS_RATE_LIMIT_PER_MINUTE", 120),
         max_upload_bytes=_int("CIVICLENS_MAX_UPLOAD_BYTES", 2_000_000),
+        myscheme_api_key=os.getenv("CIVICLENS_MYSCHEME_API_KEY", "").strip(),
     )
 
 

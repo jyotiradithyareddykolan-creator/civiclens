@@ -17,7 +17,7 @@ Results are **preliminary assessments**. The final decision always rests with th
 
 ## 1. Quick start
 
-**Prerequisites:** Python 3.11+ (tested on 3.13). Node 18+ is only needed for the optional UI checks. No database, no build step, no API key required.
+**Prerequisites:** Python 3.11+ (tested on 3.13). Node 18+ is only needed for the optional UI checks. No database or build step is required. The reviewed local catalogue needs no API key; live myScheme detail retrieval can optionally use the public client key exposed by myScheme's own frontend.
 
 ```bash
 cd civiclens/backend
@@ -50,6 +50,7 @@ Copy `.env.example` to `.env` (or export the variables). **Names only; never com
 | `CIVICLENS_LLM_MODEL` | `claude-sonnet-5-5` | Model used when a key is set. |
 | `CIVICLENS_DATA_PATH` | `backend/data/schemes.json` | Scheme dataset. |
 | `CIVICLENS_LIVE_FETCH` | `0` | `1` lets "Check source now" fetch **https `*.gov.in` / `*.nic.in`** URLs only (timeout 10 s, 3 bounded retries). |
+| `CIVICLENS_MYSCHEME_API_KEY` | empty | Optional public myScheme client key. Enables the official detail-API fallback when a myScheme scheme page returns only a client-rendered error shell. Never commit a key or expose it to the browser. |
 | `CIVICLENS_STALE_DAYS` | `90` | "Last checked" older than this is flagged stale. |
 | `CIVICLENS_RATE_LIMIT_PER_MINUTE` | `120` | Per-IP limit on `/api/*`. |
 | `CIVICLENS_MAX_UPLOAD_BYTES` | `2000000` | Upload size limit for `/api/documents/inspect`. |

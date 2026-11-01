@@ -3,18 +3,20 @@ import hashlib
 import logging
 from typing import Literal, Optional
 
+import httpx
+
 from fastapi import APIRouter, FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import agent, discovery, fields, ingest, llm, security
+from . import agent, discovery, fields, ingest, llm, security, online
 from .changes import detect_changes
 from .checklist import application_guidance, build_checklist
 from .config import FRONTEND_DIR, get_settings, today
 from .eligibility import UnknownDocument, evaluate
 from .i18n import t
-from .models import AgentRunRequest, AskRequest, AssessRequest, SearchRequest, ToolCall
+from .models import AgentRunRequest, AskRequest, AssessRequest, SearchRequest, ToolCall, OnlineDiscoveryRequest
 from .retrieval import get_index
 from .sources import check_source, doc_flags, doc_summary
 from .store import get_store
@@ -113,7 +115,37 @@ def build_router() -> APIRouter:
 
     @api.post("/search")
     def search(req: SearchRequest):
-        return agent.execute_tool("search_official_sources", req.model_dump())
+        result = agent.execute_tool("search_official_sources", req.model_dump(exclude={"online"}))
+        if req.online:
+            try:
+                result["online_discovery"] = online.discover(req.query, req.limit)
+            except Exception:  # online failures must not remove local results
+                result["online_discovery"] = {"results": [], "online": True,
+                                               "notice": "Online discovery was unavailable; showing local reviewed results only."}
+        return result
+
+    @api.post("/discover")
+    def discover_online(req: OnlineDiscoveryRequest):
+        reason = security.reject_sensitive(req.query)
+        if reason: raise HTTPException(400, detail=reason)
+        return online.discover(req.query, req.limit)
+
+    @api.post("/discover/retrieve")
+    def retrieve_online(lead: dict):
+        """Retrieve one discovery lead. The lead is validated again; it is not trusted from the client."""
+        url = lead.get("source_url") if isinstance(lead, dict) else None
+        if not isinstance(url, str) or not security.is_approved_url(url):
+            raise HTTPException(422, detail="A valid approved official source URL is required.")
+        try:
+            return online.retrieve({"source_url": url, "name": lead.get("name"), "authority": lead.get("authority")})
+        except (ValueError, httpx.HTTPError) as e:
+            raise HTTPException(502, detail=str(e))
+
+    @api.post("/drafts/{scheme_id}/eligibility")
+    def draft_eligibility(scheme_id: str, req: AssessRequest):
+        draft = online.draft(scheme_id); store = online.draft_store(scheme_id)
+        if not draft or not store: raise HTTPException(404, detail="Draft scheme not found or it has expired.")
+        return evaluate(draft, req.profile.eval_dict(), req.language, req.doc_ids, store=store)
 
     @api.post("/agent/run")
     def agent_run(req: AgentRunRequest):
