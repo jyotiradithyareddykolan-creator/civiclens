@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import hashlib
 import ipaddress
+import json
+import logging
 import re
 import socket
 from datetime import date
@@ -20,6 +22,8 @@ from . import fields, ingest, security
 from .config import get_settings, today
 from .retrieval import tokenize
 from .store import get_store, Store
+
+log = logging.getLogger("civiclens.online")
 
 DISCOVERY_PAGES = (
     "https://www.myscheme.gov.in/search",
@@ -73,20 +77,32 @@ def _title_from_html(data: bytes) -> str:
     return re.sub(r"\s+", " ", m.group(1)).strip() if m else "Official government scheme information"
 
 
+def _log_url(url: str) -> str:
+    """Keep diagnostics useful without logging query strings or credentials."""
+    u = urlparse(url)
+    keys = "query_params=<redacted>" if parse_qs(u.query) else ""
+    return urlunparse((u.scheme, u.netloc, u.path or "/", "", keys, ""))
+
+
 def _fetch(url: str, extra_headers: dict[str, str] | None = None) -> tuple[str, bytes, str]:
     if not _safe_url(url): raise ValueError("The source URL is not an approved public government URL.")
     current = _canonical(url)
+    redirect_chain = [_log_url(current)]
     for _ in range(MAX_REDIRECTS + 1):
         if not _safe_url(current): raise ValueError("A redirect left the approved public government domain.")
         headers = {"User-Agent": "CivicLens/1.0", **(extra_headers or {})}
         r = httpx.get(current, timeout=10.0, follow_redirects=False, headers=headers)
+        content_type = r.headers.get("content-type", "")
+        log.info("official_fetch status=%s final_url=%s content_type=%s bytes=%s redirects=%s generic_error_shell=%s",
+                 r.status_code, _log_url(current), content_type.split(";", 1)[0], len(r.content), redirect_chain,
+                 _is_error_shell(r.content))
         if r.status_code in (301, 302, 303, 307, 308):
             location = r.headers.get("location")
             if not location: raise ValueError("The source returned an invalid redirect.")
-            current = _canonical(urljoin(current, location)); continue
+            current = _canonical(urljoin(current, location)); redirect_chain.append(_log_url(current)); continue
         if r.status_code != 200: raise ValueError(f"The official source returned HTTP {r.status_code}.")
         if len(r.content) > MAX_RESPONSE_BYTES: raise ValueError("The official source is larger than the safe retrieval limit.")
-        return current, r.content, r.headers.get("content-type", "")
+        return current, r.content, content_type
     raise ValueError("The official source redirected too many times.")
 
 
@@ -234,7 +250,18 @@ def _rule_candidates(passages: list[dict], doc_id: str) -> list[dict]:
 
 def _is_error_shell(data: bytes) -> bool:
     text = re.sub(r"\s+", " ", data.decode("utf-8", errors="replace")).lower()
-    return "something went wrong. please try again later" in text and "sign out" in text
+    return "something went wrong. please try again later" in text
+
+
+def _json_source_text(value) -> str:
+    """Flatten JSON string values without treating field names or snippets as rules."""
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, list):
+        return "\n".join(x for x in (_json_source_text(v) for v in value) if x)
+    if isinstance(value, dict):
+        return "\n".join(x for x in (_json_source_text(v) for v in value.values()) if x)
+    return ""
 
 
 def _myscheme_detail_text(url: str, data: bytes) -> tuple[bytes, str, str] | None:
@@ -245,6 +272,8 @@ def _myscheme_detail_text(url: str, data: bytes) -> tuple[bytes, str, str] | Non
     """
     parsed = urlparse(url)
     if parsed.hostname != "www.myscheme.gov.in" or "/schemes/" not in parsed.path:
+        return None
+    if not _is_error_shell(data):
         return None
     key = get_settings().myscheme_api_key
     if not key:
@@ -257,22 +286,27 @@ def _myscheme_detail_text(url: str, data: bytes) -> tuple[bytes, str, str] | Non
         return None
     response = httpx.post(api_url, json=[slug], timeout=10.0, follow_redirects=False,
                           headers={"User-Agent": "CivicLens/1.0", "x-api-key": key})
-    if response.status_code != 200 or len(response.content) > MAX_RESPONSE_BYTES:
-        return None
+    log.info("official_detail_api status=%s final_url=%s content_type=%s bytes=%s slug=%s",
+             response.status_code, _log_url(api_url), response.headers.get("content-type", "").split(";", 1)[0],
+             len(response.content), slug)
+    if response.status_code != 200:
+        raise ValueError(f"The official myScheme detail API returned HTTP {response.status_code} for this scheme.")
+    if len(response.content) > MAX_RESPONSE_BYTES:
+        raise ValueError("The official myScheme detail API response is larger than the safe retrieval limit.")
     try:
         payload = response.json()
     except ValueError:
-        return None
+        raise ValueError("The official myScheme detail API returned invalid JSON for this scheme.") from None
     rows = payload.get("data") or []
     if not rows:
-        return None
+        raise ValueError("The official myScheme detail API returned no scheme content for this slug.")
     en = rows[0].get("en") or {}
     basic = en.get("basicDetails") or {}
     content = en.get("schemeContent") or {}
     parts = [basic.get("schemeName") or "", content.get("briefDescription") or ""]
     text = "\n".join(x for x in parts if x).strip()
     if not text:
-        return None
+        raise ValueError("The official myScheme detail API returned an empty scheme record.")
     return text.encode("utf-8"), "text/plain", api_url
 
 
@@ -289,16 +323,33 @@ def retrieve(lead: dict) -> dict:
         else:
             detail_url = None
             if _is_error_shell(data):
-                raise ValueError("The official scheme page returned a generic error page; no source evidence was retrieved.")
+                raise ValueError("The official scheme page returned a generic error page; no source evidence was retrieved. Configure CIVICLENS_MYSCHEME_API_KEY to try the official myScheme detail API.")
         _cache[key] = (final_url, data, content_type, detail_url)
     name = lead.get("name") or _title_from_html(data)
-    kind = "pdf" if data.startswith(b"%PDF-") or "pdf" in content_type.lower() else "html"
-    validation_name = url if (urlparse(url).path.lower().endswith((".pdf", ".txt", ".md", ".html", ".htm"))) else url + (".pdf" if kind == "pdf" else ".html")
-    valid_kind, error = security.validate_upload(validation_name, content_type.split(";")[0] or None, data, MAX_RESPONSE_BYTES)
-    if error and kind == "html":
-        valid_kind, error = "html", None
-    if error: raise ValueError(error)
-    text = ingest.extract_text(valid_kind, data)
+    ctype = content_type.lower()
+    if data.startswith(b"%PDF-") or "pdf" in ctype:
+        kind = "pdf"
+    elif "json" in ctype:
+        kind = "json"
+    elif "html" in ctype or not ctype or urlparse(url).path.lower().endswith((".html", ".htm")) or data.lstrip().startswith(b"<"):
+        kind = "html"
+    elif ctype.startswith("text/") or urlparse(url).path.lower().endswith((".txt", ".md")):
+        kind = "text"
+    else:
+        raise ValueError("The official source returned an unsupported content type.")
+    if kind == "json":
+        try:
+            text = _json_source_text(json.loads(data.decode("utf-8")))
+        except (UnicodeDecodeError, ValueError, TypeError):
+            raise ValueError("The official JSON source could not be parsed safely.") from None
+        if not text:
+            raise ValueError("The official JSON source contained no readable scheme content.")
+    else:
+        suffix = {"pdf": ".pdf", "html": ".html", "text": ".txt"}[kind]
+        validation_name = url if urlparse(url).path.lower().endswith((".pdf", ".txt", ".md", ".html", ".htm")) else url + suffix
+        valid_kind, error = security.validate_upload(validation_name, content_type.split(";", 1)[0] or None, data, MAX_RESPONSE_BYTES)
+        if error: raise ValueError(error)
+        text = ingest.extract_text(valid_kind, data)
     passages = ingest.chunk_text(text)
     for p in passages: p.update(verbatim=True, excerpt=p["text"])
     doc_id = "online-doc-" + hashlib.sha256(final_url.encode()).hexdigest()[:12]

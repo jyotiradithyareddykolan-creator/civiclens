@@ -103,6 +103,53 @@ def test_oversized_source_and_private_redirect_are_rejected(monkeypatch):
         online.retrieve({"name": "x", "authority": "Ministry", "source_url": "https://www.gov.in/x2"})
 
 
+def test_invalid_url_timeout_and_unsupported_content_type_fail_safely(monkeypatch):
+    with pytest.raises(ValueError, match="approved public government"):
+        online.retrieve({"name": "x", "authority": "Ministry", "source_url": "http://127.0.0.1/private"})
+
+    monkeypatch.setattr(online, "_safe_url", lambda url: True)
+    monkeypatch.setattr(online.httpx, "get", lambda *a, **k: (_ for _ in ()).throw(httpx.ReadTimeout("slow")))
+    with pytest.raises(httpx.ReadTimeout):
+        online.retrieve({"name": "x", "authority": "Ministry", "source_url": "https://www.gov.in/slow"})
+
+    monkeypatch.setattr(online.httpx, "get", lambda *a, **k: Response(b"binary", headers={"content-type": "application/zip"}))
+    with pytest.raises(ValueError, match="unsupported content type"):
+        online.retrieve({"name": "x", "authority": "Ministry", "source_url": "https://www.gov.in/archive"})
+
+
+def test_official_json_content_is_retrieved_and_extracted(monkeypatch):
+    import json
+    payload = {"schemeContent": "Applicants must be aged 60 years and above and annual income must not exceed Rs. 100000."}
+    online._cache.clear()
+    monkeypatch.setattr(online, "_safe_url", lambda url: True)
+    monkeypatch.setattr(online.httpx, "get", lambda *a, **k: Response(json.dumps(payload).encode(), headers={"content-type": "application/json"}))
+    result = online.retrieve({"name": "JSON Scheme", "authority": "Department", "source_url": "https://www.gov.in/api/scheme"})
+    assert result["rules_extracted"] == 2
+    assert {r["attribute"] for r in result["scheme"]["rules"]} == {"age", "annual_income"}
+
+
+def test_empty_myscheme_detail_api_is_not_success(monkeypatch):
+    monkeypatch.setenv("CIVICLENS_MYSCHEME_API_KEY", "public-test-key")
+    online._cache.clear()
+    online._drafts.clear()
+    monkeypatch.setattr(online, "_safe_url", lambda url: True)
+    monkeypatch.setattr(online.httpx, "get", lambda *a, **k: Response(b"Something went wrong. Please try again later. Sign Out"))
+    monkeypatch.setattr(online.httpx, "post", lambda *a, **k: Response(b'{"status":"Success","data":[]}'))
+    with pytest.raises(ValueError, match="no scheme content"):
+        online.retrieve({"name": "Empty Detail", "authority": "Department", "source_url": "https://www.myscheme.gov.in/schemes/empty-detail"})
+    assert not online._drafts
+
+
+def test_fetch_logs_http_diagnostics_without_query_string(monkeypatch, caplog):
+    monkeypatch.setattr(online, "_safe_url", lambda url: True)
+    monkeypatch.setattr(online.httpx, "get", lambda *a, **k: Response(b"<p>Official content</p>", headers={"content-type": "text/html"}))
+    with caplog.at_level("INFO", logger="civiclens.online"):
+        online.retrieve({"name": "Logged", "authority": "Department", "source_url": "https://www.gov.in/scheme/logged?secret=no"})
+    record = next(r.message for r in caplog.records if "official_fetch" in r.message)
+    assert "status=200" in record and "content_type=text/html" in record and "generic_error_shell=False" in record
+    assert "secret" not in record
+
+
 def test_pdf_content_type_is_supported_without_pdf_suffix(monkeypatch):
     from pypdf import PdfWriter
     import io
